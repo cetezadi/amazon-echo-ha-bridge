@@ -70,7 +70,7 @@ public class HueMulator {
         log.info("hue lights list requested: " + userId + " from " + request.getRemoteAddr() + request.getLocalPort());
 
         int pageNumber = request.getLocalPort()-portBase;
-        Page<DeviceDescriptor> deviceList = repository.findByDeviceType("switch", new PageRequest(pageNumber, 25, Sort.unsorted()));
+        Page<DeviceDescriptor> deviceList = repository.findByDeviceType("switch", PageRequest.of(pageNumber, 25, Sort.unsorted()));
         Map<String, String> deviceResponseMap = new HashMap<>();
         for (DeviceDescriptor device : deviceList) {
             deviceResponseMap.put(device.getId(), device.getName());
@@ -88,7 +88,7 @@ public class HueMulator {
     public ResponseEntity<HueApiResponse> getApi(@PathVariable(value = "userId") String userId, HttpServletRequest request) {
         log.info("hue api root requested: " + userId + " from " + request.getRemoteAddr());
         int pageNumber = request.getLocalPort()-portBase;
-        Page<DeviceDescriptor> descriptorList = repository.findByDeviceType("switch", new PageRequest(pageNumber, 25, Sort.unsorted()));
+        Page<DeviceDescriptor> descriptorList = repository.findByDeviceType("switch", PageRequest.of(pageNumber, 25, Sort.unsorted()));
         if (descriptorList == null) {
             return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
         }
