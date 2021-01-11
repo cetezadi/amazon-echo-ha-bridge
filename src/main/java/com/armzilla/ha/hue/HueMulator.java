@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
@@ -69,7 +70,7 @@ public class HueMulator {
         log.info("hue lights list requested: " + userId + " from " + request.getRemoteAddr() + request.getLocalPort());
 
         int pageNumber = request.getLocalPort()-portBase;
-        Page<DeviceDescriptor> deviceList = repository.findByDeviceType("switch", new PageRequest(pageNumber, 25));
+        Page<DeviceDescriptor> deviceList = repository.findByDeviceType("switch", new PageRequest(pageNumber, 25, Sort.unsorted()));
         Map<String, String> deviceResponseMap = new HashMap<>();
         for (DeviceDescriptor device : deviceList) {
             deviceResponseMap.put(device.getId(), device.getName());
@@ -87,7 +88,7 @@ public class HueMulator {
     public ResponseEntity<HueApiResponse> getApi(@PathVariable(value = "userId") String userId, HttpServletRequest request) {
         log.info("hue api root requested: " + userId + " from " + request.getRemoteAddr());
         int pageNumber = request.getLocalPort()-portBase;
-        Page<DeviceDescriptor> descriptorList = repository.findByDeviceType("switch", new PageRequest(pageNumber, 25));
+        Page<DeviceDescriptor> descriptorList = repository.findByDeviceType("switch", new PageRequest(pageNumber, 25, Sort.unsorted()));
         if (descriptorList == null) {
             return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
         }

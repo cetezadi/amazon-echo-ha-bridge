@@ -1,5 +1,6 @@
 package com.armzilla.ha.upnp;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/upnp")
 public class UpnpSettingsResource {
-    private Logger log = Logger.getLogger(UpnpSettingsResource.class);
+    private Logger log = LogManager.getLogger(UpnpSettingsResource.class);
         @Value("${emulator.portcount}")
         private int portCount;
 
