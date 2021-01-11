@@ -17,7 +17,8 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -43,7 +44,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/api")
 public class HueMulator {
-    private static final Logger log = Logger.getLogger(HueMulator.class);
+    private static final Logger log = LogManager.getLogger(HueMulator.class);
     private static final String INTENSITY_PERCENT = "${intensity.percent}";
     private static final String INTENSITY_BYTE = "${intensity.byte}";
     @Autowired
