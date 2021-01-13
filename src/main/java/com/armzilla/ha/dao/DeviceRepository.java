@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface DeviceRepository extends CrudRepository<DeviceDescriptor, String> {
     Page<DeviceDescriptor> findByDeviceType(String type, Pageable request);
-    List<DeviceDescriptor> findAll();
-    DeviceDescriptor findOne(String id);
+    List<DeviceDescriptor> findAllById();
+//    DeviceDescriptor findById(String id);
 
 }

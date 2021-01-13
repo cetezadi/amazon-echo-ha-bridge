@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by arm on 4/12/15.
@@ -110,12 +111,14 @@ public class HueMulator {
     @RequestMapping(value = "/{userId}/lights/{lightId}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<DeviceResponse> getLigth(@PathVariable(value = "lightId") String lightId, @PathVariable(value = "userId") String userId, HttpServletRequest request) {
         log.info("hue light requested: " + lightId + " from " + request.getRemoteAddr());
-        DeviceDescriptor device = repository.findOne(lightId);
-        if (device == null) {
+	Optional<DeviceDescriptor> d = repository.findById(lightId);
+	
+	if (! d.isPresent())
+        {
             return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
-        } else {
-            log.info("found device named: " + device.getName());
         }
+        DeviceDescriptor device = d.get();
+        log.info("found device named: " + device.getName());
         DeviceResponse lightResponse = DeviceResponse.createResponse(device.getName(), device.getId());
 
         HttpHeaders headerMap = new HttpHeaders();
@@ -141,10 +144,12 @@ public class HueMulator {
             return new ResponseEntity<>(null, null, HttpStatus.BAD_REQUEST);
         }
 
-        DeviceDescriptor device = repository.findOne(lightId);
-        if (device == null) {
+	Optional<DeviceDescriptor> d = repository.findById(lightId);
+        if (! d.isPresent())
+        {
             return new ResponseEntity<>(null, null, HttpStatus.NOT_FOUND);
         }
+        DeviceDescriptor device = d.get();
 
         String responseString;
         String url;
