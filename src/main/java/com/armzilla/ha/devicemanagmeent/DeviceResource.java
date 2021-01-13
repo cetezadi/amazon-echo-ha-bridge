@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.stream.StreamSupport;
+import java.util.stream.Collectors;
 import java.util.*;
 
 /**
@@ -69,7 +71,10 @@ public class DeviceResource {
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<DeviceDescriptor>> findAllDevices() {
-        List<DeviceDescriptor> deviceList = deviceRepository.findAllById();
+
+        Iterable<DeviceDescriptor> iterable = deviceRepository.findAll();
+        List<DeviceDescriptor> deviceList = StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
+
         List<DeviceDescriptor> plainList = new LinkedList<>(deviceList);
         return new ResponseEntity<>(plainList, null, HttpStatus.OK);
     }
